@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:elo_byte_task/src/constants/constants.dart';
 import 'package:elo_byte_task/src/extensions/extensions.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/slider.thumb.dart';
+import 'package:elo_byte_task/src/modules/set.goal/components/slider.tick.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/ui.image.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,9 +52,9 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: slateGreyColor,
+      backgroundColor: whiteColor,
       body: isLoading
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : Column(
               children: [
                 Stack(
@@ -125,20 +126,74 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'set target distance'.toUpperCase(),
+                  style: context.theme.textTheme.titleMedium!.copyWith(
+                    color: darkColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
                 SliderTheme(
                   data: SliderThemeData(
-                    trackHeight: 10,
-                    thumbShape: SliderThumbImage(customImage!),
+                    trackHeight: 5,
+                    thumbShape: SliderThumbImage(
+                      customImage!,
+                    ),
+                    activeTrackColor: slateGreyColor,
+                    inactiveTrackColor: slateGreyColor,
+                    valueIndicatorColor: darkColor,
+                    activeTickMarkColor: whiteColor,
+                    inactiveTickMarkColor: whiteColor,
+                    tickMarkShape:
+                        const LineSliderTickMarkShape(tickMarkRadius: 2),
+                    valueIndicatorTextStyle: context.theme.textTheme.bodyMedium!
+                        .copyWith(color: accentColor),
+                    showValueIndicator: ShowValueIndicator.never,
+
+                    //valueIndicatorShape:
                   ),
-                  child: Slider(
-                    value: sliderValue,
-                    max: 1.0,
-                    min: 0.0,
-                    onChanged: (value) {
-                      setState(() {
-                        sliderValue = value;
-                      });
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Slider(
+                          value: sliderValue,
+                          max: 10000.0,
+                          min: 0.0,
+                          label: '${'$sliderValue'.split('.')[0]}m',
+                          divisions: 10,
+                          onChanged: (value) {
+                            setState(() {
+                              sliderValue =
+                                  double.parse(value.floor().toString());
+                            });
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '0m',
+                                style: context.theme.textTheme.bodyMedium!
+                                    .copyWith(color: darkColor),
+                              ),
+                              Text(
+                                '10000m',
+                                style: context.theme.textTheme.bodyMedium!
+                                    .copyWith(color: darkColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

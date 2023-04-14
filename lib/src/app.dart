@@ -29,6 +29,10 @@ class MyApp extends ConsumerWidget {
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
+          bodyMedium:  GoogleFonts.manrope(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         buttonTheme: ButtonThemeData(
           minWidth: double.infinity,
