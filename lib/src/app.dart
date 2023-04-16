@@ -21,6 +21,11 @@ class MyApp extends ConsumerWidget {
             fontSize: 36,
             fontWeight: FontWeight.w700,
           ),
+          headlineMedium: GoogleFonts.plusJakartaSans(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+          
           titleMedium: GoogleFonts.manrope(
             fontSize: 16,
             fontWeight: FontWeight.w500,
@@ -38,7 +43,7 @@ class MyApp extends ConsumerWidget {
           minWidth: double.infinity,
           buttonColor: const Color(0xFF20C56C),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(48),),
           height: 56,
         ),
       ),
