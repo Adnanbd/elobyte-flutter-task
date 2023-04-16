@@ -1,3 +1,4 @@
+import 'package:elo_byte_task/src/dummy.dart';
 import 'package:elo_byte_task/src/modules/home/view/home.view.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/slider.thumb.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/ui.image.gen.dart';
@@ -49,7 +50,7 @@ class MyApp extends ConsumerWidget {
       ),
       debugShowCheckedModeBanner: false,
       restorationScopeId: appName,
-      home: const HomeView(),
+      home: const MyHomePage(),
     );
   }
 }
