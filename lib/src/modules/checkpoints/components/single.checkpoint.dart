@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SingleCheckpoint extends ConsumerWidget {
-  const SingleCheckpoint({super.key});
+  final double value;
+  final int index;
+  const SingleCheckpoint({
+    super.key,
+    required this.value,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,17 +28,17 @@ class SingleCheckpoint extends ConsumerWidget {
             width: 5,
           ),
           Text(
-            'Checkpoint 1',
+            'Checkpoint ${index+1}',
             style: context.theme.textTheme.titleMedium!.copyWith(
-              color: darkColor,
+              
               fontWeight: FontWeight.w300,
             ),
           ),
           Expanded(child: Container()),
           Text(
-            '500m',
+            '${value.floor()}m',
             style: context.theme.textTheme.titleMedium!.copyWith(
-              color: darkColor,
+              
               fontWeight: FontWeight.w300,
             ),
           ),

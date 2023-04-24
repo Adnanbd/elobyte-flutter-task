@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "544511616263",
+    "project_id": "elobyte-task-202304",
+    "storage_bucket": "elobyte-task-202304.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544511616263:android:28b07d3ca8961a96f011a2",
+        "android_client_info": {
+          "package_name": "com.example.elo_byte_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "544511616263-dalhk7s8p092o37rpphgkjm3grfejl6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh0VH1oQDQqsph4XJ04Dzu7SrEUQhiuoU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "544511616263-dalhk7s8p092o37rpphgkjm3grfejl6g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>544511616263-50gmh1jogjphbv1hpe62vgtt0l5etl8i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.544511616263-50gmh1jogjphbv1hpe62vgtt0l5etl8i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBb4xG6QLxU0e_o-qEHWHotGDvJdf6PNIE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>544511616263</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.eloByteTask</string>
+	<key>PROJECT_ID</key>
+	<string>elobyte-task-202304</string>
+	<key>STORAGE_BUCKET</key>
+	<string>elobyte-task-202304.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:544511616263:ios:2c2796daca4edaf1f011a2</string>
+</dict>
+</plist>

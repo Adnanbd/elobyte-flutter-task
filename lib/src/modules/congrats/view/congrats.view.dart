@@ -6,13 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CongratsView extends ConsumerWidget {
-  const CongratsView({super.key});
+  final String deviceId;
+  const CongratsView({super.key, required this.deviceId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String msgA = 'Applause to Your Effort, Try Harder Next Time.';
     return Scaffold(
-      backgroundColor: whiteColor,
+      //backgroundColor: whiteColor,
       body: SizedBox(
         height: context.height,
         child: Padding(
@@ -53,7 +54,7 @@ class CongratsView extends ConsumerWidget {
                     Text(
                       'Your determination and effort is inspiring. Keep pushing yourself to reach new heights.',
                       style: context.theme.textTheme.titleMedium!.copyWith(
-                        color: darkColor,
+                        //color: darkColor,
                         fontSize: 18,
                       ),
                     ),
@@ -65,7 +66,7 @@ class CongratsView extends ConsumerWidget {
                 width: context.width * .9,
                 child: MaterialButton(
                   onPressed: () {
-                    context.pushAndRemoveUntil(const SetGoalView());
+                    context.pushAndRemoveUntil( SetGoalView(deviceId: deviceId,));
                   },
                   color: const Color(0xFF20C56C),
                   elevation: 0,

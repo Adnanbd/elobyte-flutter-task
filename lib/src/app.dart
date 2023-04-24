@@ -1,7 +1,6 @@
-import 'package:elo_byte_task/src/dummy.dart';
+import 'package:elo_byte_task/src/constants/theme.c.dart';
+import 'package:elo_byte_task/src/modules/home/provider/home.provider.dart';
 import 'package:elo_byte_task/src/modules/home/view/home.view.dart';
-import 'package:elo_byte_task/src/modules/set.goal/components/slider.thumb.dart';
-import 'package:elo_byte_task/src/modules/set.goal/components/ui.image.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerWidget, WidgetRef;
@@ -15,42 +14,10 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      theme: ThemeData.light().copyWith(
-        useMaterial3: true,
-        textTheme: TextTheme(
-          headlineLarge: GoogleFonts.plusJakartaSans(
-            fontSize: 36,
-            fontWeight: FontWeight.w700,
-          ),
-          headlineMedium: GoogleFonts.plusJakartaSans(
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-          ),
-          
-          titleMedium: GoogleFonts.manrope(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-          labelLarge: GoogleFonts.manrope(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          bodyMedium:  GoogleFonts.manrope(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        buttonTheme: ButtonThemeData(
-          minWidth: double.infinity,
-          buttonColor: const Color(0xFF20C56C),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(48),),
-          height: 56,
-        ),
-      ),
+      theme: ref.watch(isDarkTheme) ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
       restorationScopeId: appName,
-      home: const MyHomePage(),
+      home: const HomeView(),
     );
   }
 }

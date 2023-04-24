@@ -1,12 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:elo_byte_task/src/constants/constants.dart';
+import 'package:elo_byte_task/src/db/firestore.db.dart';
 import 'package:elo_byte_task/src/extensions/extensions.dart';
 import 'package:elo_byte_task/src/modules/history/view/history.view.dart';
 import 'package:elo_byte_task/src/modules/checkpoints/views/checkpoint.view.dart';
+import 'package:elo_byte_task/src/modules/home/provider/home.provider.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/slider.thumb.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/slider.tick.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/ui.image.gen.dart';
+import 'package:elo_byte_task/src/modules/set.goal/provider/set.goal.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +17,8 @@ import 'package:flutter_svg/svg.dart';
 import 'dart:ui' as ui;
 
 class SetGoalView extends ConsumerStatefulWidget {
-  const SetGoalView({super.key});
+  final String deviceId;
+  const SetGoalView({super.key, required this.deviceId});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SetGoalViewState();
@@ -22,7 +26,6 @@ class SetGoalView extends ConsumerStatefulWidget {
 
 class _SetGoalViewState extends ConsumerState<SetGoalView> {
   ui.Image? customImage;
-  double sliderValue = 0.0;
 
   Future<ui.Image> loadImage(String assetPath) async {
     ByteData data = await rootBundle.load(assetPath);
@@ -53,8 +56,10 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
 
   @override
   Widget build(BuildContext context) {
+    final target = ref.watch(targetProvider);
+    final isDark = ref.watch(isDarkTheme);
+
     return Scaffold(
-      backgroundColor: whiteColor,
       body: isLoading
           ? const CircularProgressIndicator()
           : SizedBox(
@@ -105,7 +110,7 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                                   ),
                                   SvgPicture.asset(
                                     'assets/Theme.svg',
-                                    color: whiteColor,
+                                    color: isDark? darkColor: whiteColor,
                                   ),
                                 ],
                               ),
@@ -136,9 +141,7 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                   ),
                   Text(
                     'set target distance'.toUpperCase(),
-                    style: context.theme.textTheme.titleMedium!.copyWith(
-                      color: darkColor,
-                    ),
+                    style: context.theme.textTheme.titleMedium,
                   ),
                   const SizedBox(
                     height: 30,
@@ -149,11 +152,11 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                       thumbShape: SliderThumbImage(
                         customImage!,
                       ),
-                      activeTrackColor: slateGreyColor,
-                      inactiveTrackColor: slateGreyColor,
+                      activeTrackColor:  isDark ? slate100Color: slateGreyColor,
+                      inactiveTrackColor: isDark ? slate100Color: slateGreyColor,
                       valueIndicatorColor: darkColor,
-                      activeTickMarkColor: whiteColor,
-                      inactiveTickMarkColor: whiteColor,
+                      activeTickMarkColor: isDark ? darkColor : whiteColor,
+                      inactiveTickMarkColor: isDark ? darkColor : whiteColor,
                       tickMarkShape:
                           const LineSliderTickMarkShape(tickMarkRadius: 2),
                       valueIndicatorTextStyle: context
@@ -168,16 +171,14 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                       child: Column(
                         children: [
                           Slider(
-                            value: sliderValue,
+                            value: target,
                             max: 10000.0,
                             min: 0.0,
-                            label: '${'$sliderValue'.split('.')[0]}m',
+                            label: '${'$target'.split('.')[0]}m',
                             divisions: 10,
                             onChanged: (value) {
-                              setState(() {
-                                sliderValue =
-                                    double.parse(value.floor().toString());
-                              });
+                              ref.read(targetProvider.notifier).state = 5.0;
+                              //double.parse(value.floor().toString());
                             },
                           ),
                           Padding(
@@ -187,17 +188,11 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                               children: [
                                 Text(
                                   '0m',
-                                  style: context.theme.textTheme.bodyMedium!
-                                      .copyWith(
-                                    color: darkColor,
-                                  ),
+                                  style: context.theme.textTheme.bodyMedium,
                                 ),
                                 Text(
                                   '10000m',
-                                  style: context.theme.textTheme.bodyMedium!
-                                      .copyWith(
-                                    color: darkColor,
-                                  ),
+                                  style: context.theme.textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -210,15 +205,21 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                   SizedBox(
                     width: context.width * .9,
                     child: MaterialButton(
-                      onPressed: () {
-                        context.push(const CheckPointView());
-                      },
+                      onPressed: target > 0.0
+                          ? () {
+                              FirestoreDB().setTarget(target, widget.deviceId);
+                              context.push(CheckPointView(
+                                deviceID: widget.deviceId,
+                              ));
+                            }
+                          : null,
+                      disabledColor: greyColor.withOpacity(.2),
                       color: const Color(0xFF20C56C),
                       elevation: 0,
-                      child: const Text(
+                      child: Text(
                         'Set Limit',
                         style: TextStyle(
-                          color: whiteColor,
+                          color: target > 0.0 ? whiteColor : greyColor,
                         ),
                       ),
                     ),
