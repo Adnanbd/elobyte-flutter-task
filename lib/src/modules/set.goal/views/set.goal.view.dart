@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'package:elo_byte_task/src/components/theme.button.dart';
 import 'package:elo_byte_task/src/constants/constants.dart';
 import 'package:elo_byte_task/src/db/firestore.db.dart';
 import 'package:elo_byte_task/src/extensions/extensions.dart';
@@ -8,12 +7,10 @@ import 'package:elo_byte_task/src/modules/checkpoints/views/checkpoint.view.dart
 import 'package:elo_byte_task/src/modules/home/provider/home.provider.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/slider.thumb.dart';
 import 'package:elo_byte_task/src/modules/set.goal/components/slider.tick.dart';
-import 'package:elo_byte_task/src/modules/set.goal/components/ui.image.gen.dart';
 import 'package:elo_byte_task/src/modules/set.goal/provider/set.goal.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'dart:ui' as ui;
 
 class SetGoalView extends ConsumerStatefulWidget {
@@ -41,6 +38,7 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
+      ref.read(targetProvider.notifier).state = 0.0;
       loadImage(
         'assets/Slider-small.png',
       ).then((image) {
@@ -108,9 +106,8 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                                     fit: BoxFit.contain,
                                     color: whiteColor,
                                   ),
-                                  SvgPicture.asset(
-                                    'assets/Theme.svg',
-                                    color: isDark? darkColor: whiteColor,
+                                  ThemeButton(
+                                    color: isDark ? darkColor : whiteColor,
                                   ),
                                 ],
                               ),
@@ -152,8 +149,9 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                       thumbShape: SliderThumbImage(
                         customImage!,
                       ),
-                      activeTrackColor:  isDark ? slate100Color: slateGreyColor,
-                      inactiveTrackColor: isDark ? slate100Color: slateGreyColor,
+                      activeTrackColor: isDark ? slate100Color : slateGreyColor,
+                      inactiveTrackColor:
+                          isDark ? slate100Color : slateGreyColor,
                       valueIndicatorColor: darkColor,
                       activeTickMarkColor: isDark ? darkColor : whiteColor,
                       inactiveTickMarkColor: isDark ? darkColor : whiteColor,
@@ -177,8 +175,10 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
                             label: '${'$target'.split('.')[0]}m',
                             divisions: 10,
                             onChanged: (value) {
-                              ref.read(targetProvider.notifier).state = 5.0;
-                              //double.parse(value.floor().toString());
+                              ref
+                                      .read(targetProvider.notifier)
+                                      .state = // = 5.0;
+                                  double.parse(value.floor().toString());
                             },
                           ),
                           Padding(

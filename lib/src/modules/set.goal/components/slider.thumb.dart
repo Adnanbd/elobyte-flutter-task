@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 
 class SliderThumbImage extends SliderComponentShape {
   final ui.Image image;
-  final _indicatorShape = const MyIndicatorShape(
-
-  );
+  final _indicatorShape = const MyIndicatorShape();
 
   SliderThumbImage(this.image);
 
@@ -31,7 +29,6 @@ class SliderThumbImage extends SliderComponentShape {
     required double textScaleFactor,
     required ui.Size sizeWithOverflow,
   }) {
-    // TODO: implement paint
     final canvas = context.canvas;
     final imageWidth = image.width;
     final imageHeight = image.height;
@@ -106,8 +103,6 @@ class MyIndicatorShape extends SliderComponentShape {
   }
 }
 
-
-
 class IndicatorPathPainter {
   const IndicatorPathPainter();
 
@@ -123,7 +118,6 @@ class IndicatorPathPainter {
     TextPainter labelPainter,
     double textScaleFactor,
   ) {
-    assert(labelPainter != null);
     return Size(
       _upperRectangleWidth(labelPainter, 1, textScaleFactor),
       labelPainter.height + _labelPadding,
@@ -141,7 +135,9 @@ class IndicatorPathPainter {
     assert(!sizeWithOverflow.isEmpty);
 
     const double edgePadding = 8.0;
-    final double rectangleWidth = _upperRectangleWidth(labelPainter, scale, textScaleFactor);
+    final double rectangleWidth =
+        _upperRectangleWidth(labelPainter, scale, textScaleFactor);
+
     /// Value indicator draws on the Overlay and by using the global Offset
     /// we are making sure we use the bounds of the Overlay instead of the Slider.
     final Offset globalCenter = parentBox.localToGlobal(center);
@@ -150,8 +146,12 @@ class IndicatorPathPainter {
     // chance of it rendering outside the bounds of the render box. If the shift
     // is negative, then the lobe is shifted from right to left, and if it is
     // positive, then the lobe is shifted from left to right.
-    final double overflowLeft = math.max(0, rectangleWidth / 2 - globalCenter.dx + edgePadding);
-    final double overflowRight = math.max(0, rectangleWidth / 2 - (sizeWithOverflow.width - globalCenter.dx - edgePadding));
+    final double overflowLeft =
+        math.max(0, rectangleWidth / 2 - globalCenter.dx + edgePadding);
+    final double overflowRight = math.max(
+        0,
+        rectangleWidth / 2 -
+            (sizeWithOverflow.width - globalCenter.dx - edgePadding));
 
     if (rectangleWidth < sizeWithOverflow.width) {
       return overflowLeft - overflowRight;
@@ -162,8 +162,11 @@ class IndicatorPathPainter {
     }
   }
 
-  double _upperRectangleWidth(TextPainter labelPainter, double scale, double textScaleFactor) {
-    final double unscaledWidth = math.max(_minLabelWidth * textScaleFactor, labelPainter.width) + _labelPadding * 2;
+  double _upperRectangleWidth(
+      TextPainter labelPainter, double scale, double textScaleFactor) {
+    final double unscaledWidth =
+        math.max(_minLabelWidth * textScaleFactor, labelPainter.width) +
+            _labelPadding * 2;
     return unscaledWidth * scale;
   }
 
@@ -184,7 +187,8 @@ class IndicatorPathPainter {
     }
     assert(!sizeWithOverflow.isEmpty);
 
-    final double rectangleWidth = _upperRectangleWidth(labelPainter, scale, textScaleFactor);
+    final double rectangleWidth =
+        _upperRectangleWidth(labelPainter, scale, textScaleFactor);
     final double horizontalShift = getHorizontalShift(
       parentBox: parentBox,
       center: center,
@@ -206,8 +210,9 @@ class IndicatorPathPainter {
       ..lineTo(-_triangleHeight, -_triangleHeight)
       ..lineTo(_triangleHeight, -_triangleHeight)
       ..close();
-    final Paint fillPaint = Paint()..color = backgroundPaintColor;
-    final RRect upperRRect = RRect.fromRectAndRadius(upperRect, const Radius.circular(_upperRectRadius));
+
+    final RRect upperRRect = RRect.fromRectAndRadius(
+        upperRect, const Radius.circular(_upperRectRadius));
     trianglePath.addRRect(upperRRect);
 
     canvas.save();
@@ -225,10 +230,12 @@ class IndicatorPathPainter {
     //canvas.drawPath(trianglePath, fillPaint);
 
     // The label text is centered within the value indicator.
-    final double bottomTipToUpperRectTranslateY = -_preferredHalfHeight / 2 - upperRect.height;
+    final double bottomTipToUpperRectTranslateY =
+        -_preferredHalfHeight / 2 - upperRect.height;
     canvas.translate(0, bottomTipToUpperRectTranslateY);
     final Offset boxCenter = Offset(horizontalShift, upperRect.height / 2);
-    final Offset halfLabelPainterOffset = Offset(labelPainter.width / 2, labelPainter.height / 2);
+    final Offset halfLabelPainterOffset =
+        Offset(labelPainter.width / 2, labelPainter.height / 2);
     final Offset labelOffset = boxCenter - halfLabelPainterOffset;
     labelPainter.paint(canvas, labelOffset);
     canvas.restore();

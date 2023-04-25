@@ -4,7 +4,6 @@ import 'package:elo_byte_task/src/modules/home/view/home.view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ConsumerWidget, WidgetRef;
-import 'package:google_fonts/google_fonts.dart';
 
 import 'constants/constants.dart' show appName;
 

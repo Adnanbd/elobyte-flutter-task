@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elo_byte_task/src/modules/checkpoints/provider/checkpoint.provider.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FirestoreDB {
@@ -36,6 +35,20 @@ class FirestoreDB {
         }, SetOptions(merge: true)).then(
             (value) => print("New CheckPoint Added successfully!"),
             onError: (e) => print("Error Set New CheckPoint: $e"));
+      }
+    }, onError: (e) {});
+  }
+
+  Future<void> clearCheckPoint(String deviceId) async {
+    final docRef = db.collection(dbName).doc(deviceId);
+    //List<double> prevCheckpoints = [];
+    await docRef.get().then((value) {
+      if (value.exists) {
+        final data = value.data() as Map<String, dynamic>;
+
+        docRef.set({'checkpoints': []}, SetOptions(merge: false)).then(
+            (value) => print("Checkpoints Cleared successfully!"),
+            onError: (e) => print("Error Checkpoints Cleared: $e"));
       }
     }, onError: (e) {});
   }

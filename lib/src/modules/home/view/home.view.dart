@@ -1,10 +1,13 @@
+import 'package:elo_byte_task/src/components/theme.button.dart';
 import 'package:elo_byte_task/src/constants/constants.dart';
 import 'package:elo_byte_task/src/extensions/extensions.dart';
+import 'package:elo_byte_task/src/modules/congrats/view/congrats.view.dart';
 import 'package:elo_byte_task/src/modules/home/provider/home.provider.dart';
 import 'package:elo_byte_task/src/modules/set.goal/views/set.goal.view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -19,10 +22,38 @@ class _HomeViewState extends ConsumerState<HomeView> {
     super.initState();
   }
 
+  initNotification() async {
+    // initialize the plugin
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings();
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (String? payload) async {
+      if (payload != null) {
+        print('notification payload: $payload');
+        context.push(
+          CongratsView(
+            deviceId: await PlatformDeviceId.getDeviceId,
+            isComplete: true,
+          ),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ref.watch(isDarkTheme) ? context.theme.scaffoldBackgroundColor : slateGreyColor,
+      backgroundColor: ref.watch(isDarkTheme)
+          ? context.theme.scaffoldBackgroundColor
+          : slateGreyColor,
       body: ref.watch(deviceIdNewProvider).when(
         data: (id) {
           print('DeviceId = $id');
@@ -53,12 +84,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           height: 16,
                           fit: BoxFit.contain,
                         ),
-                        InkWell(
-                          onTap: () => ref
-                              .read(isDarkTheme.notifier)
-                              .update((state) => !state),
-                          child: SvgPicture.asset('assets/Theme.svg'),
-                        ),
+                        const ThemeButton(),
                       ],
                     ),
                   ),
@@ -70,36 +96,34 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          //assets/Dark_Image.png
-                          ref.watch(isDarkTheme)
-                              ? Image.asset('assets/Image_darkk.png')
-                              : Image.asset('assets/Image.png'),
-                          Positioned(
-                            bottom: 20,
-                            child: SizedBox(
-                              width: context.width * .8,
-                              child: MaterialButton(
-                                onPressed: () {
-                                  //_showNotification();
-                                  context.push(SetGoalView(
-                                    deviceId: id,
-                                  ));
-                                },
-                                color: const Color(0xFF20C56C),
-                                elevation: 0,
-                                child: const Text(
-                                  'Get Started',
-                                  style: TextStyle(color: whiteColor),
-                                ),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        //assets/Dark_Image.png
+                        ref.watch(isDarkTheme)
+                            ? Image.asset('assets/Image_darkk.png')
+                            : Image.asset('assets/Image.png'),
+                        Positioned(
+                          bottom: 20,
+                          child: SizedBox(
+                            width: context.width * .8,
+                            child: MaterialButton(
+                              onPressed: () {
+                                //_showNotification();
+                                context.push(SetGoalView(
+                                  deviceId: id,
+                                ));
+                              },
+                              color: const Color(0xFF20C56C),
+                              elevation: 0,
+                              child: const Text(
+                                'Get Started',
+                                style: TextStyle(color: whiteColor),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

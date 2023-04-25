@@ -1,17 +1,22 @@
+import 'package:elo_byte_task/src/components/theme.button.dart';
 import 'package:elo_byte_task/src/constants/constants.dart';
+import 'package:elo_byte_task/src/db/firestore.db.dart';
 import 'package:elo_byte_task/src/extensions/extensions.dart';
 import 'package:elo_byte_task/src/modules/set.goal/views/set.goal.view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CongratsView extends ConsumerWidget {
-  final String deviceId;
-  const CongratsView({super.key, required this.deviceId});
+  final String? deviceId;
+  final bool? isComplete;
+
+  const CongratsView(
+      {super.key, required this.deviceId, this.isComplete = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String msgA = 'Applause to Your Effort, Try Harder Next Time.';
+    String msgB = 'Congratulations on Reaching Your Target';
     return Scaffold(
       //backgroundColor: whiteColor,
       body: SizedBox(
@@ -35,9 +40,7 @@ class CongratsView extends ConsumerWidget {
                           height: 16,
                           fit: BoxFit.contain,
                         ),
-                        SvgPicture.asset(
-                          'assets/Theme.svg',
-                        ),
+                        const ThemeButton(),
                       ],
                     ),
                     Image.asset(
@@ -46,7 +49,7 @@ class CongratsView extends ConsumerWidget {
                       fit: BoxFit.contain,
                     ),
                     Text(
-                      msgA,
+                      isComplete! ? msgB : msgA,
                       style: context.theme.textTheme.headlineLarge!.copyWith(
                         color: accentColor,
                       ),
@@ -54,7 +57,6 @@ class CongratsView extends ConsumerWidget {
                     Text(
                       'Your determination and effort is inspiring. Keep pushing yourself to reach new heights.',
                       style: context.theme.textTheme.titleMedium!.copyWith(
-                        //color: darkColor,
                         fontSize: 18,
                       ),
                     ),
@@ -66,7 +68,10 @@ class CongratsView extends ConsumerWidget {
                 width: context.width * .9,
                 child: MaterialButton(
                   onPressed: () {
-                    context.pushAndRemoveUntil( SetGoalView(deviceId: deviceId,));
+                    FirestoreDB().clearCheckPoint(deviceId!);
+                    context.pushAndRemoveUntil(SetGoalView(
+                      deviceId: deviceId!,
+                    ));
                   },
                   color: const Color(0xFF20C56C),
                   elevation: 0,

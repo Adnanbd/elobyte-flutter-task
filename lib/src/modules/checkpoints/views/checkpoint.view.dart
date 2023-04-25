@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:elo_byte_task/src/components/theme.button.dart';
 import 'package:elo_byte_task/src/constants/constants.dart';
 import 'package:elo_byte_task/src/db/firestore.db.dart';
 import 'package:elo_byte_task/src/extensions/extensions.dart';
@@ -8,11 +9,9 @@ import 'package:elo_byte_task/src/modules/checkpoints/components/single.checkpoi
 import 'package:elo_byte_task/src/modules/checkpoints/provider/checkpoint.provider.dart';
 import 'package:elo_byte_task/src/modules/congrats/view/congrats.view.dart';
 import 'package:elo_byte_task/src/modules/home/provider/home.provider.dart';
-import 'package:elo_byte_task/src/modules/set.goal/provider/set.goal.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 
 class CheckPointView extends ConsumerStatefulWidget {
@@ -114,13 +113,13 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
 
         if (ref.read(getTargetProvider(widget.deviceID)).hasValue) {
           log('Has Value >');
-          if (ref
-                  .read(getTargetProvider(widget.deviceID))
-                  .asData
-                  ?.value['target'] <
-              ref.read(totalDistanceProvider)) {
+          double targetValue = ref
+              .read(getTargetProvider(widget.deviceID))
+              .asData
+              ?.value['target'];
+          if (targetValue < ref.read(totalDistanceProvider)) {
             log('COMPLETED ======!!!!!!!!!!!!!!!');
-            _showNotification();
+            _showNotification(targetValue.toString());
             _positionStreamSubscription?.cancel();
           } else {
             log('Not Completed');
@@ -141,7 +140,7 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
     return (value * highestValue) / target;
   }
 
-  Future<void> _showNotification() async {
+  Future<void> _showNotification(String target) async {
     // Define the notification details
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
@@ -157,8 +156,8 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
     // Show the notification
     await flutterLocalNotificationsPlugin.show(
         0, // Notification ID
-        'Congratulations!',
-        'You have completed you goal!',
+        'Target Completed',
+        'You covered ${target}m - WalkMate',
         platformChannelSpecifics,
         payload: 'SecretCodee');
   }
@@ -217,9 +216,8 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
                                   fit: BoxFit.contain,
                                   color: whiteColor,
                                 ),
-                                SvgPicture.asset(
-                                  'assets/Theme.svg',
-                                  color:isDark?darkColor: whiteColor,
+                                ThemeButton(
+                                  color: isDark ? darkColor : whiteColor,
                                 ),
                               ],
                             ),
@@ -279,6 +277,8 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
                                           children: [
                                             const Text(
                                               'Completed',
+                                              style:
+                                                  TextStyle(color: whiteColor),
                                             ),
                                             Text(
                                               '${ref.watch(totalDistanceProvider).floor()}m',
@@ -293,6 +293,8 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
                                           children: [
                                             const Text(
                                               'Target',
+                                              style:
+                                                  TextStyle(color: whiteColor),
                                             ),
                                             Text(
                                               '${data['target'].floor()}m',
@@ -367,7 +369,7 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(

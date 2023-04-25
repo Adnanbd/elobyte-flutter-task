@@ -1,4 +1,3 @@
-import 'package:elo_byte_task/src/constants/constants.dart';
 import 'package:elo_byte_task/src/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,9 +27,8 @@ class SingleCheckpoint extends ConsumerWidget {
             width: 5,
           ),
           Text(
-            'Checkpoint ${index+1}',
+            'Checkpoint ${index + 1}',
             style: context.theme.textTheme.titleMedium!.copyWith(
-              
               fontWeight: FontWeight.w300,
             ),
           ),
@@ -38,7 +36,6 @@ class SingleCheckpoint extends ConsumerWidget {
           Text(
             '${value.floor()}m',
             style: context.theme.textTheme.titleMedium!.copyWith(
-              
               fontWeight: FontWeight.w300,
             ),
           ),
