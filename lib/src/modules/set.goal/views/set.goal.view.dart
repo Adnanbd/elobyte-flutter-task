@@ -56,204 +56,229 @@ class _SetGoalViewState extends ConsumerState<SetGoalView> {
   Widget build(BuildContext context) {
     final target = ref.watch(targetProvider);
     final isDark = ref.watch(isDarkTheme);
+    final highestTarget = ref.watch(highestTargetProvider);
 
     return Scaffold(
       body: isLoading
           ? const CircularProgressIndicator()
-          : SizedBox(
-              height: context.height,
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        height: context.height * .45,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16),
-                          ),
-                          color: accentColor,
-                        ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Image.asset('assets/Pattern.png'),
-                      ),
-                      Container(
-                        height: context.height * .45,
-                        padding: const EdgeInsets.all(20),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: context.mediaQuery.viewPadding.top,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              //SizedBox(
-                              //  height: context.mediaQuery.viewPadding.top,
-                              //),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    'assets/Logo 1.png',
-                                    height: 16,
-                                    fit: BoxFit.contain,
-                                    color: whiteColor,
-                                  ),
-                                  ThemeButton(
-                                    color: isDark ? darkColor : whiteColor,
-                                  ),
-                                ],
-                              ),
-
-                              Text(
-                                'Set Your Walking Goal Now!',
-                                style: context.theme.textTheme.headlineLarge!
-                                    .copyWith(
-                                  color: whiteColor,
-                                ),
-                              ),
-
-                              Text(
-                                'Your determination and effort is inspiring. Keep pushing yourself to reach new heights.',
-                                style: context.theme.textTheme.titleMedium!
-                                    .copyWith(
-                                  color: whiteColor,
-                                ),
-                              ),
-                            ],
+          : SingleChildScrollView(
+              child: SizedBox(
+                height: context.height,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          height: context.height * .45,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                            color: accentColor,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'set target distance'.toUpperCase(),
-                    style: context.theme.textTheme.titleMedium,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  SliderTheme(
-                    data: SliderThemeData(
-                      trackHeight: 5,
-                      thumbShape: SliderThumbImage(
-                        customImage!,
-                      ),
-                      activeTrackColor: isDark ? slate100Color : slateGreyColor,
-                      inactiveTrackColor:
-                          isDark ? slate100Color : slateGreyColor,
-                      valueIndicatorColor: darkColor,
-                      activeTickMarkColor: isDark ? darkColor : whiteColor,
-                      inactiveTickMarkColor: isDark ? darkColor : whiteColor,
-                      tickMarkShape:
-                          const LineSliderTickMarkShape(tickMarkRadius: 2),
-                      valueIndicatorTextStyle: context
-                          .theme.textTheme.bodyMedium!
-                          .copyWith(color: accentColor),
-                      showValueIndicator: ShowValueIndicator.never,
-
-                      //valueIndicatorShape:
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Slider(
-                            value: target,
-                            max: 10000.0,
-                            min: 0.0,
-                            label: '${'$target'.split('.')[0]}m',
-                            divisions: 10,
-                            onChanged: (value) {
-                              ref
-                                      .read(targetProvider.notifier)
-                                      .state = // = 5.0;
-                                  double.parse(value.floor().toString());
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Row(
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Image.asset('assets/Pattern.png'),
+                        ),
+                        Container(
+                          height: context.height * .45,
+                          padding: const EdgeInsets.all(20),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: context.mediaQuery.viewPadding.top,
+                            ),
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  '0m',
-                                  style: context.theme.textTheme.bodyMedium,
+                                //SizedBox(
+                                //  height: context.mediaQuery.viewPadding.top,
+                                //),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                      'assets/Logo 1.png',
+                                      height: 16,
+                                      fit: BoxFit.contain,
+                                      color: whiteColor,
+                                    ),
+                                    ThemeButton(
+                                      color: isDark ? darkColor : whiteColor,
+                                    ),
+                                  ],
                                 ),
+
                                 Text(
-                                  '10000m',
-                                  style: context.theme.textTheme.bodyMedium,
+                                  'Set Your Walking Goal Now!',
+                                  style: context.theme.textTheme.headlineLarge!
+                                      .copyWith(
+                                    color: whiteColor,
+                                  ),
+                                ),
+
+                                Text(
+                                  'Your determination and effort is inspiring. Keep pushing yourself to reach new heights.',
+                                  style: context.theme.textTheme.titleMedium!
+                                      .copyWith(
+                                    color: whiteColor,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Expanded(child: Container()),
-                  SizedBox(
-                    width: context.width * .9,
-                    child: MaterialButton(
-                      onPressed: target > 0.0
-                          ? () {
-                              FirestoreDB().setTarget(target, widget.deviceId);
-                              context.push(CheckPointView(
-                                deviceID: widget.deviceId,
-                              ));
-                            }
-                          : null,
-                      disabledColor: greyColor.withOpacity(.2),
-                      color: const Color(0xFF20C56C),
-                      elevation: 0,
-                      child: Text(
-                        'Set Limit',
-                        style: TextStyle(
-                          color: target > 0.0 ? whiteColor : greyColor,
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      'set target distance'.toUpperCase(),
+                      style: context.theme.textTheme.titleMedium,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SliderTheme(
+                      data: SliderThemeData(
+                        trackHeight: 5,
+                        thumbShape: SliderThumbImage(
+                          customImage!,
+                        ),
+                        activeTrackColor:
+                            isDark ? slate100Color : slateGreyColor,
+                        inactiveTrackColor:
+                            isDark ? slate100Color : slateGreyColor,
+                        valueIndicatorColor: darkColor,
+                        activeTickMarkColor: isDark ? darkColor : whiteColor,
+                        inactiveTickMarkColor: isDark ? darkColor : whiteColor,
+                        tickMarkShape:
+                            const LineSliderTickMarkShape(tickMarkRadius: 2),
+                        valueIndicatorTextStyle: context
+                            .theme.textTheme.bodyMedium!
+                            .copyWith(color: accentColor),
+                        showValueIndicator: ShowValueIndicator.never,
+
+                        //valueIndicatorShape:
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Slider(
+                              value: target,
+                              max: highestTarget,
+                              min: 0.0,
+                              label: '${'$target'.split('.')[0]}m',
+                              divisions: 10,
+                              onChanged: (value) {
+                                ref
+                                        .read(targetProvider.notifier)
+                                        .state = // = 5.0;
+                                    double.parse(value.floor().toString());
+                              },
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '0m',
+                                    style: context.theme.textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    '${highestTarget.floor()}m',
+                                    style: context.theme.textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                    width: context.width * .9,
-                    child: MaterialButton(
-                      onPressed: () {
-                        context.push(const HistoryView());
-                      },
-                      //color: const Color(0xFF20C56C),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(48),
-                        side: const BorderSide(
-                          width: 1,
-                          color: accentColor,
+                    Expanded(
+                        child: Container(
+                      child: SizedBox(
+                        width: context.width * .6,
+                        child: TextField(
+                          style: context.theme.textTheme.labelMedium!
+                              .copyWith(color: darkColor, fontSize: 20),
+                          keyboardType: TextInputType.number,
+                          onChanged: (v) {
+                            ref.read(targetProvider.notifier).state = 0.0;
+                            ref.read(highestTargetProvider.notifier).state =
+                                double.parse(v);
+                          },
+                          decoration: InputDecoration(
+                            hintText: highestTarget.floor().toString(),
+                          ),
                         ),
                       ),
-                      elevation: 0,
-                      child: const Text(
-                        'History',
-                        style: TextStyle(
-                          color: accentColor,
+                    )),
+                    SizedBox(
+                      width: context.width * .9,
+                      child: MaterialButton(
+                        onPressed: target > 0.0
+                            ? () {
+                                FirestoreDB()
+                                    .setTarget(target, widget.deviceId);
+                                context.push(CheckPointView(
+                                  deviceID: widget.deviceId,
+                                ));
+                              }
+                            : null,
+                        disabledColor: greyColor.withOpacity(.2),
+                        color: const Color(0xFF20C56C),
+                        elevation: 0,
+                        child: Text(
+                          'Set Limit',
+                          style: TextStyle(
+                            color: target > 0.0 ? whiteColor : greyColor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                ],
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      width: context.width * .9,
+                      child: MaterialButton(
+                        onPressed: () {
+                          context.push(const HistoryView());
+                        },
+                        //color: const Color(0xFF20C56C),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(48),
+                          side: const BorderSide(
+                            width: 1,
+                            color: accentColor,
+                          ),
+                        ),
+                        elevation: 0,
+                        child: const Text(
+                          'History',
+                          style: TextStyle(
+                            color: accentColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                  ],
+                ),
               ),
             ),
     );

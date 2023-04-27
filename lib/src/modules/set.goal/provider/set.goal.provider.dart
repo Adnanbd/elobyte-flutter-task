@@ -8,6 +8,12 @@ final fetchedTargetProvider = StateProvider<double>((ref) {
   return 0.0;
 });
 
+final highestTargetProvider = StateProvider<double>((ref) {
+  return 1000.0;
+});
+
+
+
 //final deviceIdProvider = StateProvider<String?>((ref) {
 //  return null;
 //});
