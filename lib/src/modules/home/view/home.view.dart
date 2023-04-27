@@ -20,6 +20,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     super.initState();
+    initNotification();
   }
 
   initNotification() async {

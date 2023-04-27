@@ -31,8 +31,10 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
   @override
   void initState() {
     super.initState();
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FirestoreDB().getAllCheckPoints(widget.deviceID, ref);
+      ref.read(totalDistanceProvider.notifier).state = 0.0;
 
       getPermissionRequest().then((value) {
         _initGeolocator();
@@ -122,7 +124,7 @@ class _CheckPointViewState extends ConsumerState<CheckPointView> {
             _showNotification(targetValue.toString());
             _positionStreamSubscription?.cancel();
           } else {
-            log('Not Completed');
+            log('Not Completed - Target> $targetValue - Current> ${ref.read(totalDistanceProvider)}');
           }
         }
 
